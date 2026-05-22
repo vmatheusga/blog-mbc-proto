@@ -43,12 +43,30 @@ export function BlogTopbar({
           <div className="flex items-center justify-center px-5 md:px-[80px] py-[8px] relative size-full">
             <div className="flex flex-[1_0_0] flex-row items-center self-stretch gap-[16px] max-w-[1536px] w-full">
 
-              {/* Left: Blog title + nav links */}
+              {/* Left: Blog title/logo + nav links */}
               <div className="flex flex-[1_0_0] h-full items-center min-w-px relative">
-                <div className="flex flex-[1_0_0] h-full items-center min-w-px overflow-clip">
-                  <span className="font-['Inter',sans-serif] font-semibold text-[20px] text-[#11181c] tracking-[-0.8px] leading-[1.1] whitespace-nowrap shrink-0">
+                {/* Container com overflow-hidden para clipar as duas transições */}
+                <div className="relative inline-flex h-9 items-center overflow-hidden shrink-0 min-w-[52px]">
+                  <span
+                    className={[
+                      "font-['Inter',sans-serif] font-semibold text-[20px] text-[#11181c] tracking-[-0.8px] leading-[1.1] whitespace-nowrap",
+                      "transition-all duration-300",
+                      isScrolled ? "-translate-y-2 opacity-0" : "translate-y-0 opacity-100",
+                    ].join(" ")}
+                    aria-hidden={isScrolled}
+                  >
                     Blog
                   </span>
+                  <img
+                    src="/mbc-logo.svg"
+                    alt="Minha Biblioteca Católica"
+                    className={[
+                      "absolute left-0 h-[20px] w-auto object-contain",
+                      "transition-all duration-300",
+                      isScrolled ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+                    ].join(" ")}
+                    aria-hidden={!isScrolled}
+                  />
                 </div>
 
                 {/* Nav links — desktop */}
