@@ -36,7 +36,7 @@ export default function App() {
      * principalMenu z-[3], topbar z-[2], main z-[1]
      */
     <div className="bg-white flex flex-col items-start relative size-full">
-      <div className="bg-white flex flex-col isolate items-center overflow-x-clip overflow-y-auto relative shrink-0 w-full min-h-screen">
+      <div className="bg-white flex flex-col isolate items-center overflow-x-clip relative shrink-0 w-full min-h-screen">
 
         {/* principalMenu — z-[3] */}
         <PrincipalMenuFigma />
