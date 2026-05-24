@@ -29,9 +29,9 @@ export function PrincipalMenuFigma() {
   }, [mobileOpen, closeMenu]);
 
   return (
-    <div className="bg-white dark:bg-black w-full relative z-[3]">
+    <div className="bg-white w-full relative z-[3]">
       {/* Desktop layout — visível apenas em xl+ (≥1280px) */}
-      <div className="hidden h-10 items-center bg-white dark:bg-black xl:flex">
+      <div className="hidden h-10 items-center bg-white xl:flex">
         <div className={`${CONTAINER} grid h-full grid-cols-[1fr_auto_1fr] items-center`}>
           <a
             aria-label="Biblioteca Católica"
@@ -76,7 +76,7 @@ export function PrincipalMenuFigma() {
       </div>
 
       {/* Mobile layout — hamburguer esquerda, logo centro, conta direita */}
-      <div className="flex h-14 items-center justify-between bg-white dark:bg-black px-4 text-foreground xl:hidden">
+      <div className="flex h-14 items-center justify-between bg-white px-4 text-foreground xl:hidden">
         <button
           aria-label="Abrir menu"
           aria-haspopup="dialog"
@@ -88,7 +88,7 @@ export function PrincipalMenuFigma() {
         </button>
 
         <a className="flex min-w-0 flex-1 items-center justify-center" href="/">
-          <img src="/mbc-simbolo.svg" alt="Biblioteca Católica" className="h-8 w-auto dark:invert" />
+          <img src="/mbc-simbolo.svg" alt="Biblioteca Católica" className="h-8 w-auto" />
         </a>
 
         <a
@@ -117,11 +117,11 @@ export function PrincipalMenuFigma() {
           aria-modal="true"
           role="dialog"
           aria-label="Menu de navegação"
-          className={`relative flex h-full w-[min(320px,86vw)] flex-col overflow-hidden bg-white dark:bg-black shadow-[24px_0_80px_rgba(0,0,0,0.18)] transition-transform duration-200 ease-out ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`relative flex h-full w-[min(320px,86vw)] flex-col overflow-hidden bg-white shadow-[24px_0_80px_rgba(0,0,0,0.18)] transition-transform duration-200 ease-out ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pb-8 pt-7">
             <div className="mb-8 flex items-center justify-between gap-4">
-              <img src="/mbc-simbolo.svg" alt="Biblioteca Católica" className="h-5 w-auto dark:invert" />
+              <img src="/mbc-simbolo.svg" alt="Biblioteca Católica" className="h-5 w-auto" />
               <button
                 aria-label="Fechar menu"
                 className="inline-flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-foreground/10"
