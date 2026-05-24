@@ -30,6 +30,35 @@ function applyActive(items: EcosystemNavItem[]): EcosystemNavItem[] {
   }));
 }
 
+export function useSubscriptionCtaUrl() {
+  const [ctaUrl, setCtaUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch(
+      `${SUPABASE_URL}/rest/v1/settings?select=value&key=eq.subscription_cta_url`,
+      {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      }
+    )
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled) setCtaUrl(data?.[0]?.value ?? null);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return ctaUrl;
+}
+
 export function useEcosystemNavItems() {
   // Initialize as [] — defined exactly once by fetch to avoid fallback→API flash
   const [items, setItems] = useState<EcosystemNavItem[]>([]);
