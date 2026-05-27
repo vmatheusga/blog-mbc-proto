@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { AuthProvider } from "../features/auth/AuthContext";
 import { PrincipalMenuFigma } from "./components/PrincipalMenuFigma";
 import { BlogTopbar } from "./components/BlogTopbar";
 import { HeroPost } from "./components/HeroPost";
@@ -7,7 +8,7 @@ import { PostCard } from "./components/PostCard";
 import { ColumnistCard } from "./components/ColumnistCard";
 import { posts, columnists } from "./components/blog-data";
 
-export default function App() {
+function BlogContent() {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -31,10 +32,6 @@ export default function App() {
   }, [selectedCategory, searchQuery]);
 
   return (
-    /*
-     * pageblock: bg-white flex-col isolate items-center overflow-x-clip overflow-y-auto w-full
-     * principalMenu z-[3], topbar z-[2], main z-[1]
-     */
     <div className="bg-white flex flex-col items-start relative size-full">
       <div className="bg-white flex flex-col isolate items-center overflow-x-clip relative shrink-0 w-full min-h-screen">
 
@@ -139,5 +136,13 @@ export default function App() {
 
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BlogContent />
+    </AuthProvider>
   );
 }

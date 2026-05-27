@@ -7,10 +7,9 @@ export type EcosystemNavItem = {
   isActive?: boolean;
 };
 
-const SUPABASE_URL = "https://eezbxwjohucstscdlvzp.supabase.co";
-const SUPABASE_ANON_KEY =
-  (import.meta.env.VITE_SUPABASE_ANON_KEY as string) ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlemJ4d2pvaHVjc3RzY2RsdnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NDYzMTcsImV4cCI6MjA5MTQyMjMxN30.CbeU59IQL3ubO5Elk_GYN0yajX2rfez5JkNBpezPwTI";
+// Credenciais via variáveis de ambiente (sem hardcode)
+const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim();
+const SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim();
 
 const fallbackItems: EcosystemNavItem[] = [
   { id: "loja", label: "Loja", href: "https://loja-bibliotecacatolica-proto.vercel.app/" },
@@ -34,6 +33,8 @@ export function useSubscriptionCtaUrl() {
   const [ctaUrl, setCtaUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+
     let cancelled = false;
 
     fetch(
@@ -60,10 +61,14 @@ export function useSubscriptionCtaUrl() {
 }
 
 export function useEcosystemNavItems() {
-  // Initialize as [] — defined exactly once by fetch to avoid fallback→API flash
   const [items, setItems] = useState<EcosystemNavItem[]>([]);
 
   useEffect(() => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      setItems(applyActive(fallbackItems));
+      return;
+    }
+
     let cancelled = false;
 
     fetch(
