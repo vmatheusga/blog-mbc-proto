@@ -1,93 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { X, Menu, UserRound } from "lucide-react";
-import type { User } from "@supabase/supabase-js";
 import { useEcosystemNavItems, useSubscriptionCtaUrl } from "../hooks/useEcosystemNavItems";
 import { useAuth } from "../../features/auth/AuthContext";
 import { LoginModal } from "../../features/auth/LoginModal";
 import { categories } from "./blog-data";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { UserMenu, getUserDisplayName, getUserDisplayEmail, getUserInitial } from "./UserMenu";
 
 const CONTAINER = "mx-auto w-full max-w-[1536px] px-4 sm:px-8 xl:px-20";
 const ACCOUNT_HREF = "/minha-conta";
-
-function getUserDisplayName(user: User | null) {
-  const metadataName = typeof user?.user_metadata?.name === "string" ? user.user_metadata.name : "";
-  return metadataName.trim() || user?.email?.split("@")[0] || "Usuário";
-}
-
-function getUserDisplayEmail(user: User | null) {
-  return user?.email?.trim() ?? "";
-}
-
-function getUserInitial(user: User | null) {
-  const displayName = getUserDisplayName(user);
-  const displayEmail = getUserDisplayEmail(user);
-  const firstName = displayName.split(/\s+/)[0];
-
-  return (firstName || displayEmail || "U").charAt(0).toUpperCase();
-}
-
-function AccountDropdown({
-  triggerClassName,
-}: {
-  triggerClassName?: string;
-}) {
-  const { user, signOut } = useAuth();
-  const displayName = getUserDisplayName(user);
-  const displayEmail = getUserDisplayEmail(user);
-  const initial = getUserInitial(user);
-
-  async function handleSignOut() {
-    await signOut();
-  }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          aria-label="Minha conta"
-          className={`group inline-flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-            triggerClassName ?? "size-6"
-          }`}
-          title={displayName}
-          type="button"
-        >
-          <Avatar className="size-6 bg-muted">
-            <AvatarFallback className="bg-muted text-xs font-semibold text-black transition-colors group-hover:bg-accent">
-              {initial}
-            </AvatarFallback>
-          </Avatar>
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-        <div className="px-2 py-1.5">
-          <p className="truncate text-sm font-medium text-[var(--slate-12)]">
-            {displayName}
-          </p>
-          {displayEmail ? (
-            <p className="mt-0.5 truncate text-xs text-muted-foreground">
-              {displayEmail}
-            </p>
-          ) : null}
-        </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <a href={ACCOUNT_HREF}>Minha conta</a>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void handleSignOut()}>
-          Sair
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export function PrincipalMenuFigma() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -164,10 +85,10 @@ export function PrincipalMenuFigma() {
               {isLoading ? (
                 <div className="h-7 w-16 animate-pulse rounded-full bg-[var(--slate-3)]" />
               ) : isAuthenticated ? (
-                <AccountDropdown />
+                <UserMenu />
               ) : (
                 <button
-                  onClick={openLoginModal}
+                  onClick={() => { window.location.href = "https://loja-mbc-web-proto.vercel.app/entrar"; }}
                   className="inline-flex h-7 items-center rounded-full border border-[var(--slate-6)] bg-transparent px-3 text-xs font-medium leading-[1.4] text-[var(--slate-12)] transition-colors hover:bg-[var(--slate-3)]"
                   type="button"
                 >
@@ -197,11 +118,11 @@ export function PrincipalMenuFigma() {
           {isLoading ? (
             <div className="size-9" />
           ) : isAuthenticated ? (
-            <AccountDropdown triggerClassName="size-9 text-foreground hover:bg-foreground/10" />
+            <UserMenu triggerClassName="size-9 text-foreground hover:bg-foreground/10" />
           ) : (
             <button
               aria-label="Entrar"
-              onClick={openLoginModal}
+              onClick={() => { window.location.href = "https://loja-mbc-web-proto.vercel.app/entrar"; }}
               className="inline-flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-foreground/10"
               type="button"
             >
@@ -327,8 +248,7 @@ export function PrincipalMenuFigma() {
                 ) : (
                   <button
                     onClick={() => {
-                      openLoginModal();
-                      closeMenu();
+                      window.location.href = "https://loja-mbc-web-proto.vercel.app/entrar";
                     }}
                     className="flex w-full items-center rounded-[12px] px-3 py-3 font-['Inter',sans-serif] text-[15px] font-medium leading-[1.2] text-foreground transition-colors hover:bg-foreground/10"
                     type="button"
